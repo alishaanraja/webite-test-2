@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name | Creative Engineer & Designer</title>
+  <style>
+    :root {
+      --bg: #050811;
+      --card: rgba(13, 20, 38, 0.72);
+      --border: rgba(148, 163, 184, 0.15);
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Fixed Full-Page Interactive Background */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .aurora {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 20%, var(--orb1, rgba(56,189,248,0.16)), transparent 45%),
+        radial-gradient(circle at 85% 75%, var(--orb2, rgba(129,140,248,0.16)), transparent 50%);
+      transition: background 0.4s ease;
+    }
+
+    /* Top Scroll Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 12px var(--accent);
+      z-index: 200;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(5, 8, 17, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .logo-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+
+    nav a {
+      margin-left: 1.6rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.25s;
+    }
+
+    nav a:hover, nav a.active { color: var(--text); }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6.5rem 1.5rem 4rem;
+    }
+
+    .hero-box { max-width: 800px; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 1.4rem;
+      transition: color 0.4s;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7); }
+      70% { box-shadow: 0 0 0 9px rgba(45, 212, 191, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .grad {
+      background: linear-gradient(120deg, #fff 15%, var(--accent) 55%, var(--accent-2) 95%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 2.2rem;
+    }
+
+    .cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #040711;
+      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.35);
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-glass:hover { border-color: var(--accent); }
+    section {
+      position: relative;
+      z-index: 2;
+      padding: 6rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .sec-head { margin-bottom: 3rem; }
+
+    .kicker {
+      color: var(--accent);
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.45rem;
+      transition: color 0.4s;
+    }
+
+    .sec-title {
+      font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .sec-desc {
+      color: var(--muted);
+      max-width: 560px;
+      font-size: 1.05rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 0.75s ease,
+                  transform 0.75s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.75rem;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      transform-style: preserve-3d;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card.clickable { cursor: pointer; }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        400px circle at var(--x, 50%) var(--y, 50%),
+        rgba(56, 189, 248, 0.18),
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .card:hover::before { opacity: 1; }
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 22px 45px -15px rgba(0,0,0,0.7);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .tag {
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    .contact-box {
+      background: rgba(13, 20, 38, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 4rem 2rem;
+      text-align: center;
+      backdrop-filter: blur(14px);
+    }
+
+    .contact-box h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 0.8rem;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 14, 0.82);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #0d1426;
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      max-width: 540px;
+      width: 100%;
+      padding: 2.2rem;
+      transform: scale(0.94);
+      transition: transform 0.3s ease;
+    }
+
+    .modal.open .modal-card { transform: scale(1); }
+    .modal-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .modal-card p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+  <div class="aurora" id="aurora"></div>
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <div class="nav-wrap">
+      <a href="#" class="logo">
+        <span class="logo-dot"></span>YourName
+      </a>
+      <nav>
+        <a href="#services">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-box">
+      <div class="pill">
+        <span class="pulse"></span>Available for Work
+      </div>
+      <h1>
+        Crafting
+        <span class="grad">Interactive Digital</span>
+        Experiences.
+      </h1>
+      <p>
+        Hi, I'm <strong>Your Name</strong>—a creative
+        developer &amp; designer building fast web
+        products with fluid motion.
+      </p>
+      <div class="cta">
+        <a href="#work"
+           class="btn btn-primary magnetic">
+          Explore Projects
+        </a>
+        <a href="#contact"
+           class="btn btn-glass magnetic">
+          Start a Conversation
+        </a>
+      </div>
+    </div>
+  </div>
+  <section id="services">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="kicker">Capabilities</div>
+        <h2 class="sec-title">
+          Design &amp; Engineering
+        </h2>
+        <p class="sec-desc">
+          Modern architecture with refined motion.
+        </p>
+      </div>
+      <div class="grid">
+        <div class="card tilt reveal">
+          <h3>Web Architecture</h3>
+          <p>
+            Fast web apps with responsive
+            layouts and smooth 60fps motion.
+          </p>
+          <div class="tags">
+            <span class="tag">Frontend</span>
+            <span class="tag">Performance</span>
+          </div>
+        </div>
+        <div class="card tilt reveal">
+          <h3>Interactive UI / UX</h3>
+          <p>
+            Thoughtful micro-interactions, 3D
+            tilt physics, and design systems.
+          </p>
+          <div class="tags">
+            <span class="tag">Design</span>
+            <span class="tag">Motion</span>
+          </div>
+        </div>
+        <div class="card tilt reveal">
+          <h3>Product Launch</h3>
+          <p>
+            From early prototype to live site
+            with clean SEO and scalable code.
+          </p>
+          <div class="tags">
+            <span class="tag">Strategy</span>
+            <span class="tag">Launch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="kicker">Selected Work</div>
+        <h2 class="sec-title">
+          Featured Case Studies
+        </h2>
+        <p class="sec-desc">
+          Click any card to inspect details.
+        </p>
+      </div>
+      <div class="grid">
+        <div class="card tilt clickable reveal"
+             data-title="Nova Analytics"
+             data-desc="Built a real-time
+             dashboard with live telemetry,
+             cutting reporting time by 60%.">
+          <h3>Nova Analytics</h3>
+          <p>
+            Real-time dashboard with live
+            telemetry and interactive charts.
+          </p>
+          <div class="tags">
+            <span class="tag">Details</span>
+            <span class="tag">Data Viz</span>
+          </div>
+        </div>
+        <div class="card tilt clickable reveal"
+             data-title="Aether Fintech"
+             data-desc="Engineered a product
+             launch site with scroll-driven
+             motion that boosted signups 42%.">
+          <h3>Aether Fintech</h3>
+          <p>
+            Scroll-driven showcase with custom
+            interactive motion graphics.
+          </p>
+          <div class="tags">
+            <span class="tag">Details</span>
+            <span class="tag">Motion UI</span>
+          </div>
+        </div>
+        <div class="card tilt clickable reveal"
+             data-title="Pulse Commerce"
+             data-desc="Created a mobile-first
+             storefront with instant transitions
+             and a streamlined checkout.">
+          <h3>Pulse Commerce</h3>
+          <p>
+            Mobile-first storefront with
+            sub-second page transitions.
+          </p>
+          <div class="tags">
+            <span class="tag">Details</span>
+            <span class="tag">Storefront</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="contact-box reveal">
+        <h2>Let's Build Together</h2>
+        <p>
+          Ready to launch your website?
+          Send a message and let's talk.
+        </p>
+        <a href="mailto:hello@yourdomain.com"
+           class="btn btn-primary magnetic">
+          Email Me &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="m-title">Project Title</h3>
+      <p id="m-desc">Project details.</p>
+      <button class="btn btn-primary"
+              id="m-close">
+        Close Preview
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Your Name.</p>
+  </footer>
+  <script>
+    const themes = [
+      { c1: '#38bdf8', c2: '#818cf8',
+        rgb: '56, 189, 248' },
+      { c1: '#818cf8', c2: '#c084fc',
+        rgb: '129, 140, 248' },
+      { c1: '#2dd4bf', c2: '#38bdf8',
+        rgb: '45, 212, 191' },
+      { c1: '#f472b6', c2: '#818cf8',
+        rgb: '244, 114, 182' }
+    ];
+    let activeRgb = themes[0].rgb;
+    let speed = 0;
+    let lastY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const h = doc.scrollHeight
+                - window.innerHeight;
+      const pct = h > 0
+        ? (window.scrollY / h) * 100 : 0;
+      document.getElementById('progress')
+        .style.width = `${pct}%`;
+
+      speed = Math.min(
+        Math.abs(window.scrollY - lastY)
+        * 0.15, 6
+      );
+      lastY = window.scrollY;
+
+      const idx = Math.min(
+        Math.floor((pct / 100) * themes.length),
+        themes.length - 1
+      );
+      const t = themes[idx];
+      activeRgb = t.rgb;
+      doc.style.setProperty('--accent', t.c1);
+      doc.style.setProperty('--accent-2', t.c2);
+      document.getElementById('aurora').style
+        .setProperty('--orb1',
+          `rgba(${t.rgb}, 0.18)`);
+    });
+
+    const c = document.getElementById(
+      'bg-canvas'
+    );
+    const ctx = c.getContext('2d');
+    let dots = [];
+    const m = { x: null, y: null, r: 150 };
+
+    function resize() {
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('mousemove', (e) => {
+      m.x = e.clientX;
+      m.y = e.clientY;
+    });
+    window.addEventListener('mouseout', () => {
+      m.x = null;
+      m.y = null;
+    });
+
+    class Dot {
+      constructor() {
+        this.x = Math.random() * c.width;
+        this.y = Math.random() * c.height;
+        this.vx = (Math.random() - 0.5) * 0.55;
+        this.vy = (Math.random() - 0.5) * 0.55;
+        this.s = Math.random() * 2 + 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy - speed * 0.35;
+        if (this.x < 0) this.x = c.width;
+        if (this.x > c.width) this.x = 0;
+        if (this.y < 0) this.y = c.height;
+        if (this.y > c.height) this.y = 0;
+
+        if (m.x !== null) {
+          const dx = m.x - this.x;
+          const dy = m.y - this.y;
+          const d = Math.hypot(dx, dy);
+          if (d < m.r) {
+            const f = (m.r - d) / m.r;
+            this.x -= (dx / d) * f * 1.5;
+            this.y -= (dy / d) * f * 1.5;
+          }
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(
+          this.x, this.y, this.s,
+          0, Math.PI * 2
+        );
+        ctx.fillStyle =
+          `rgba(${activeRgb}, 0.7)`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 65; i++) {
+      dots.push(new Dot());
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      speed *= 0.92;
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].update();
+        dots[i].draw();
+        for (let j = i+1; j < dots.length; j++) {
+          const d = Math.hypot(
+            dots[i].x - dots[j].x,
+            dots[i].y - dots[j].y
+          );
+          if (d < 125) {
+            ctx.beginPath();
+            const a = 0.2 * (1 - d / 125);
+            ctx.strokeStyle =
+              `rgba(${activeRgb}, ${a})`;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+        if (m.x !== null) {
+          const d = Math.hypot(
+            dots[i].x - m.x,
+            dots[i].y - m.y
+          );
+          if (d < 160) {
+            ctx.beginPath();
+            const a = 0.45 * (1 - d / 160);
+            ctx.strokeStyle =
+              `rgba(${activeRgb}, ${a})`;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(m.x, m.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    document.querySelectorAll('.tilt')
+      .forEach((el) => {
+        el.addEventListener(
+          'mousemove', (e) => {
+            const r = el.getBoundingClientRect();
+            const x = e.clientX - r.left;
+            const y = e.clientY - r.top;
+            el.style.setProperty(
+              '--x', `${x}px`
+            );
+            el.style.setProperty(
+              '--y', `${y}px`
+            );
+            const rx =
+              ((y - r.height/2)/r.height)*-10;
+            const ry =
+              ((x - r.width/2)/r.width)*10;
+            el.style.transform =
+              `rotateX(${rx}deg) ` +
+              `rotateY(${ry}deg) ` +
+              `translateY(-4px)`;
+          }
+        );
+        el.addEventListener('mouseleave', () => {
+          el.style.transform =
+            'rotateX(0) rotateY(0)';
+        });
+      });
+
+    document.querySelectorAll('.magnetic')
+      .forEach((b) => {
+        b.addEventListener(
+          'mousemove', (e) => {
+            const r = b.getBoundingClientRect();
+            const dx =
+              (e.clientX - r.left - r.width/2)
+              * 0.25;
+            const dy =
+              (e.clientY - r.top - r.height/2)
+              * 0.25;
+            b.style.transform =
+              `translate(${dx}px, ${dy}px)`;
+          }
+        );
+        b.addEventListener('mouseleave', () => {
+          b.style.transform = 'translate(0,0)';
+        });
+      });
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal')
+      .forEach((el) => obs.observe(el));
+
+    const modal =
+      document.getElementById('modal');
+    document.querySelectorAll('.clickable')
+      .forEach((card) => {
+        card.addEventListener('click', () => {
+          document.getElementById('m-title')
+            .textContent = card.dataset.title;
+          document.getElementById('m-desc')
+            .textContent = card.dataset.desc;
+          modal.classList.add('open');
+        });
+      });
+    document.getElementById('m-close')
+      .addEventListener('click', () => {
+        modal.classList.remove('open');
+      });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
